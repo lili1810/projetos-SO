@@ -5,14 +5,21 @@ using namespace std;
 
 typedef long long ll;
 
-typedef struct Processo{
+typedef struct Processo {
     int id;
     int chegada;
     int duracao;
     int conclusao;
     int primeiraExec = -1;
-    // foi criado para simplificar na contagem do RR
     int duracaoMenos;
+
+    // Isso aqui é o construtor:
+    Processo(int _id, int _chegada, int _duracao) {
+        id = _id;
+        chegada = _chegada;
+        duracao = _duracao;
+        duracaoMenos = _duracao;
+    }
 }Processo;
 
 
@@ -53,18 +60,16 @@ void RR(vector<Processo> p){
 
     queue<Processo> filaProntos;
 
-    // Copia os dados e guarda a duração original
-    for(int i = 0; i < tamanho; i++){
-        p[i].duracaoMenos = p[i].duracao;
-        filaProntos.push(p[i]);
-    }
+    int i = 0;
+    filaProntos.push(p[i]);
+    i++;
 
     while(!filaProntos.empty()){
         Processo atual = filaProntos.front();
         filaProntos.pop();
 
         // Executa pelo quantum (2) ou pelo restante da duração
-        if(atual.primeiraExec == -1){
+        if(atual.chegada <= tempo && atual.primeiraExec == -1){
             atual.primeiraExec = tempo;
         }
         
@@ -72,8 +77,16 @@ void RR(vector<Processo> p){
         tempo += tempoExecutado;
         atual.duracaoMenos -= tempoExecutado;
 
+        // Verifica se novos processos chegaram enquanto o processo atual rodava
+        // Se sim, entram na fila ANTES do atual voltar para o fim
+        // ele tem prioridade o que chegou primeiro, mesmo que ao mesmo tempo
+        while(i < tamanho && p[i].chegada <= tempo){
+            filaProntos.push(p[i]);
+            i++;
+        }
+
         // Se ainda não terminou, volta para o final da fila
-        if(atual.duracaoMenos > 0){
+        if(atual.chegada <= tempo && atual.duracaoMenos > 0){
             filaProntos.push(atual);
         }else{
             atual.conclusao = tempo;
@@ -106,8 +119,8 @@ int main() {
 
     int tempo, pico;
     int id = 1;
-    while (arquivo >> tempo >> pico){
-        processos.push_back({id, tempo, pico});
+    while (arquivo >> tempo >> pico) {
+        processos.push_back(Processo(id, tempo, pico));
         id++;
     }
 
