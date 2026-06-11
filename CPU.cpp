@@ -106,6 +106,71 @@ void RR(vector<Processo> p){
     cout << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
 }
 
+// função auxiliar de sort
+bool comparaPorDuracao(const Processo& a, const Processo& b) {
+    return a.duracao < b.duracao;
+}
+
+void SJF(vector<Processo> p){
+    int tempo = 0;
+    int tamanho = p.size();
+
+    double tempoRetorno = 0;
+    double tempoResposta = 0;
+    double tempoEspera = 0;
+
+    int i = 0;
+    // queria ter usado priority queue mas não funcionaria em struct
+    vector<Processo> filaProntos;
+    for(i = 0; i < tamanho; i++){
+        if(p[i].chegada == 0){
+            filaProntos.push_back(p[i]);
+        }else{
+            break;
+        }
+    }
+
+    while(!filaProntos.empty()){
+        // não dá para dar sortttt
+        sort(filaProntos.begin(), filaProntos.end(), comparaPorDuracao);
+        Processo atual = filaProntos[0];
+        filaProntos.erase(filaProntos.begin());
+
+        if(atual.chegada <= tempo && atual.primeiraExec == -1){
+            atual.primeiraExec = tempo;
+        }
+
+        // não é necessário esse variavel, mas quis por para seguir a função de RR
+        int tempoExecutado = atual.duracao;
+        tempo += tempoExecutado;
+        // depois de executar ele conclui
+        atual.conclusao = tempo;
+
+        // Verifica se novos processos chegaram enquanto o processo atual rodava
+        // Se sim, entram na fila ANTES do atual voltar para o fim
+        // ele tem prioridade o que chegou primeiro, mesmo que ao mesmo tempo
+        while(i < tamanho && p[i].chegada <= tempo){
+            filaProntos.push_back(p[i]);
+            i++;
+        }
+
+        
+        tempoRetorno += atual.conclusao - atual.chegada;
+        tempoResposta += atual.primeiraExec - atual.chegada;
+        // a primeira execução dele é quando ele tbm termina, então o tempo que ele espera é até a primeira execução
+        // não tem preenpção
+        tempoEspera += atual.primeiraExec - atual.chegada;
+    }
+    double mediaRetorno = tempoRetorno / tamanho;
+    double mediaResposta = tempoResposta / tamanho;
+    double mediaEspera = tempoEspera / tamanho; 
+
+    cout << fixed << setprecision(1);
+    cout << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
+}
+
+
+
 int main() {
 
     ifstream arquivo("dados.txt");
@@ -126,6 +191,7 @@ int main() {
 
     FCFS(processos);
     RR(processos);
+    SJF(processos);
 
 
 
