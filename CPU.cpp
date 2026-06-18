@@ -22,7 +22,6 @@ typedef struct Processo {
     }
 }Processo;
 
-
 void FCFS(vector<Processo> p){
     int tempo = 0;
     double tempoRetorno = 0;
@@ -46,7 +45,7 @@ void FCFS(vector<Processo> p){
     double mediaEspera = tempoEspera / p.size();
     
     cout << fixed << setprecision(1);
-    cout << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
+    cout << "FCFS " << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
 }
 
 void RR(vector<Processo> p){
@@ -103,7 +102,7 @@ void RR(vector<Processo> p){
     double mediaEspera = tempoEspera / tamanho; 
 
     cout << fixed << setprecision(1);
-    cout << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
+    cout << "RR "<< mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
 }
 
 // função auxiliar de sort
@@ -154,7 +153,6 @@ void SJF(vector<Processo> p){
             i++;
         }
 
-        
         tempoRetorno += atual.conclusao - atual.chegada;
         tempoResposta += atual.primeiraExec - atual.chegada;
         // a primeira execução dele é quando ele tbm termina, então o tempo que ele espera é até a primeira execução
@@ -166,9 +164,8 @@ void SJF(vector<Processo> p){
     double mediaEspera = tempoEspera / tamanho; 
 
     cout << fixed << setprecision(1);
-    cout << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
+    cout << "SJF " << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
 }
-
 
 
 int main() {
@@ -190,11 +187,8 @@ int main() {
     }
 
     FCFS(processos);
-    RR(processos);
     SJF(processos);
-
-
-
+    RR(processos);
 
     return 0;
 }
