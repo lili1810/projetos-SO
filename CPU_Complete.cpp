@@ -63,7 +63,7 @@ void FCFS(vector<Processo>& p){
     double mediaEspera = tempoEspera / p.size();
     
     cout << fixed << setprecision(1);
-    cout << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
+    cout << "FCFS " << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
 }
 
 void RR(vector<Processo>& p){
@@ -133,7 +133,7 @@ void RR(vector<Processo>& p){
     double mediaEspera = tempoEspera / tamanho; 
 
     cout << fixed << setprecision(1);
-    cout << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
+    cout << "RR " << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
 }
 
 struct ComparaSJF {
@@ -202,7 +202,7 @@ void SJF(vector<Processo>& p){
     double mediaEspera = tempoEspera / tamanho; 
 
     cout << fixed << setprecision(1);
-    cout << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
+    cout << "SJF " << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
 }
 
 
@@ -226,8 +226,8 @@ int main() {
     }
 
     FCFS(processos);
-    RR(processos);
     SJF(processos);
+    RR(processos);
 
 
 
