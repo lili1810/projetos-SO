@@ -11,14 +11,14 @@ typedef struct Processo {
     int duracao;
     int conclusao;
     int primeiraExec = -1;
-    int duracaoMenos;
+    int duracaoMenos;//variavel exclusiva do RR
 
     // Isso aqui é o construtor:
     Processo(int _id, int _chegada, int _duracao) {
         id = _id;
         chegada = _chegada;
         duracao = _duracao;
-        duracaoMenos = _duracao;
+        duracaoMenos = _duracao;//inicializa igual ao tempo de duraçao para ser decrementado depois
     }
 }Processo;
 
@@ -130,7 +130,7 @@ void SJF(vector<Processo> p){
     }
 
     while(!filaProntos.empty()){
-        // não dá para dar sortttt
+        // não dá para dar sort
         sort(filaProntos.begin(), filaProntos.end(), comparaPorDuracao);
         Processo atual = filaProntos[0];
         filaProntos.erase(filaProntos.begin());
@@ -139,7 +139,7 @@ void SJF(vector<Processo> p){
             atual.primeiraExec = tempo;
         }
 
-        // não é necessário esse variavel, mas quis por para seguir a função de RR
+        // não é necessário essa variavel, mas quis por para seguir a função de RR
         int tempoExecutado = atual.duracao;
         tempo += tempoExecutado;
         // depois de executar ele conclui
@@ -179,10 +179,10 @@ int main() {
 
     vector<Processo> processos;
 
-    int tempo, pico;
+    int chegada, duracao;
     int id = 1;
-    while (arquivo >> tempo >> pico) {
-        processos.push_back(Processo(id, tempo, pico));
+    while (arquivo >> chegada >> duracao) {
+        processos.push_back(Processo(id, chegada, duracao));
         id++;
     }
 
