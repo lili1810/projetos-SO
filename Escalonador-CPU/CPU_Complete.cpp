@@ -66,7 +66,7 @@ void FCFS(vector<Processo>& p){
     cout << "FCFS " << mediaRetorno << " " << mediaResposta << " " << mediaEspera << endl;
 }
 
-void RR(vector<Processo>& p){
+void RR(vector<Processo>& p, int round){
     int tempo = 0;
     // vou usar esse tamanho, porque to tirando os processos da lista depois deles serem concluidos
     int tamanho = p.size();
@@ -99,7 +99,7 @@ void RR(vector<Processo>& p){
             atual.rr.primeiraExec = tempo;
         }
         
-        int tempoExecutado = min(2, atual.tempoRestante);
+        int tempoExecutado = min(round, atual.tempoRestante);
         tempo += tempoExecutado;
         atual.tempoRestante -= tempoExecutado;
 
@@ -227,7 +227,7 @@ int main() {
 
     FCFS(processos);
     SJF(processos);
-    RR(processos);
+    RR(processos, 2);
 
 
 
